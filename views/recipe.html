@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/recipe.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
+    <title>Project</title>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="meal-wrapper">
+            <div class="meal-search">
+                <h2 class="title"> Find Meals For Your Ingredeints</h2>
+                <div class="meal-search-box">
+                    <input type="text" class="search-control" placeholder="Enter an ingredeints" id="search-input">
+                    <button type="submit" class="search-btn btn" id="search-btn">
+                        <i class="fa-solid  fas fa-magnifying-glass"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="meal-result">
+                <h2 class="title">Your Search Results:</h2>
+                <div id="meal">
+                    <!-- meal item -->
+                    <!-- <div class="meal-item">
+                        <div class="meal-img">
+                            <img src="css/french-fries-recipe-3-480x270.webp"  alt="">
+                        </div>
+                        <div class="meal-name">
+                            <h3>Potato Chips</h3>
+                            <a href="#" class="recipe-btn" >Get Recipe</a>
+                        </div>
+                    </div> -->
+                    <!-- end of meal item -->
+
+
+                </div>
+            </div>
+            <div class="meal-details">
+                <!-- recipe close button -->
+                <button type="button" class="btn recipe-close-btn" id="recipe-close-btn"><i class="fa fa-times"></i>
+                </button>
+                <!-- meal content -->
+                <div class="meal-details-content" id="meal-details-content">
+                    <!-- <h2 class="recipe-title">Meals Name Here</h2>
+                    <p class="recipe-cotegory">Cotegory Name</p>
+                    <div class="recipe-instruct">
+                        <h3>instructions:</h3>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, doloremque repellat eligendi magni magnam quo voluptate mollitia provident similique quod dignissimos itaque voluptatum laudantium illo molestiae ducimus doloribus. </p><p class="next"> Error ducimus quibusdam accusamus. Animi doloribus, sequi fuga possimus deserunt dolore quis dolor itaque molestias labore voluptatem officia, enim eum accusamus quos!
+                        </p>
+                    </div>
+                    <div class="recipe-meal-img">
+                        <img src="/css/french-fries-recipe-3-480x270.webp" alt="">
+                    </div>
+                    <div class="recipe-link">
+                        <a href="#" target="_blank">Watch Video</a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script>
+    const searchbtn = document.getElementById('search-btn');
+    const meallist = document.getElementById('meal');
+    const mealdetailscontent = document.getElementById('meal-details-content');
+    const recipeclosebtn = document.getElementById('recipe-close-btn');
+    let i = 0;
+    // event listener
+    searchbtn.addEventListener('click', getmeallist);
+    meallist.addEventListener('click', getMealRecipe);
+    recipeclosebtn.addEventListener('click', () => {
+        mealdetailscontent.parentElement.classList.remove('showrecipe');
+
+    })
+    function getmeallist() {
+        let searchinputTxt = document.getElementById('search-input').value.trim() || "egg";
+        console.log(searchinputTxt.length);
+        fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchinputTxt}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data.meals) {
+                    let html = "";
+                    data.meals.forEach(element => {
+                        html += `
+        <div class="meal-item" >
+                        <div class="meal-img"  >
+                            <img src=${element.strMealThumb}  alt="">
+                        </div>
+                        <div class="meal-name" data-id='${element.idMeal}' >
+                            <h3>${element.strMeal}</h3>
+                            <a href="#" class="recipe-btn">Get Recipe</a>
+                        </div>
+                    </div>`
+                    });
+                    if (i == 1) { meallist.classList.remove('notavailable'); i = 0; }
+                    meallist.innerHTML = html;
+
+                }
+                else {
+                    // let hhml="";
+                    // hhml+=`<div class='notavailable'> </div>`
+                    meallist.innerHTML = "Sorry, this dish is not available";
+                    meallist.classList.add('notavailable');
+                    i = 1;
+                    
+                }
+            });
+    }
+    // function 
+    getmeallist();
+    function getMealRecipe(e) {
+        e.preventDefault();
+        // console.log(e.target);
+        if (e.target.classList.contains('recipe-btn')) {
+            // let mealItem=e.target.parentElement;
+            let mealItem = e.target.parentElement;
+            // console.log(mealItem.dataset.id);
+
+            fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealItem.dataset.id}`)
+                .then(response => response.json())
+                .then(data => mealRecipeModal(data.meals));
+        }
+    }
+    function mealRecipeModal(meal) {
+        console.log(meal);
+        meal = meal[0];
+        let html = `
+    <h2 class="recipe-title">${meal.strMeal}</h2>
+                    <p class="recipe-cotegory">${meal.strCategory}</p>
+                    <div class="recipe-instruct">
+                        <h3>Instructions:</h3>
+                        <p>${meal.strInstructions} </p><p class="next"> Error ducimus quibusdam accusamus. Animi doloribus, sequi fuga possimus deserunt dolore quis dolor itaque molestias labore voluptatem officia, enim eum accusamus quos!
+                        </p>
+                    </div>
+                    <div class="recipe-meal-img">
+                        <img src="${meal.strMealThumb}" alt="">
+                    </div>
+                    <div class="recipe-link">
+                        <a href="${meal.strYoutube}" target="_blank">Watch Video</a>
+                    </div>`
+            ;
+        mealdetailscontent.innerHTML = html;
+        mealdetailscontent.parentElement.classList.add('showrecipe');
+
+    }
+
+// www.themealdb.com/api/json/v1/1/lookup.php?i=52772
+
+</script>
+
+</html>

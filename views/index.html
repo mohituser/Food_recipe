@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Recipe</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body> 
+    <!-- Header -->
+        <header id="header">
+            <nav>
+                <div class="container">
+                    <div class="text-center">
+                        <a href="/" class="nav-brand text-dark">FOOD RECIPES</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <!-- FORM -->
+        <main id="site-main">
+            <div class="container">
+                <!-- <div class="box-nav d-flex justify-between">
+                   <div class="filter">
+                       <a href="/"><i class="fas fa-angle-double-left"></i> All Users</a>
+                   </div>
+                </div> -->
+                <div class="form-title text-center">
+                    <h2 class="text-dark">New User</h2>
+                    <span class="text-light">Use the below form to create a new account</span>
+                </div>
+        
+                <!-- add user form -->
+                <!-- <%- include('include/form') %> -->
+                <form action="/register" method="POST" id="add_user">
+                    <div class="new_user">
+                        <div class="form-group">
+                            <label for="name" class="text-light">Name</label>
+                            <!-- <input type="hidden" name="id" value=""> -->
+                            <input type="text" name="name" value="" placeholder="Mark Stoenis" class="form-content">
+                        </div>
+                        <div class="form-group">
+                            <label for="Email" class="text-light">Email</label>
+                            <input type="text" name="email" value="" placeholder="example@gmail.com" class="form-content">
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="text-light">Password</label>
+                            <input type="password" name="password" value="" placeholder="password" class="form-content">
+                        </div>
+                
+                
+                        <div class="form-group">
+                            <button type="submit" class="btn text-dark update">Save</button>
+                        </div>
+                
+                    </div>
+                </form>
+                <div class="filter">
+                    <a href="/loginpage"><i class="fas fa-angle-double-right"></i> Login </a>
+                </div>
+               
+            </div>
+        </main>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script src="/js/index.js"></script>
+</body>
+</html>
